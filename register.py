@@ -1,7 +1,6 @@
 """
 Class Register
 """
-
 from machine import Pin
 from time import sleep_ms as sleep
 from time import time as t

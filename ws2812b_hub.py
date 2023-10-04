@@ -16,7 +16,7 @@ class Leds:
         """
         self.door = door
         self.leds = NeoPixel(door, width, bpp = bpp)
-        self.width = self.leds.__len__()
+        self.width = width
         self.numbers = None
 
     def draw_in(self, i:int, color:list):
@@ -88,6 +88,29 @@ class Leds:
         """
         test the LED strip here
         """
+        for i in range(10):
+            color_ = color[int(len(color.keys())*random())]
+            for i in range(self.width):
+                for j in range(0, i):
+                    if self.leds[j] != [0, 0, 0]:
+                        self.leds[j][0] = int(self.leds[j][0] * 0.9)
+                        self.leds[j][1] = int(self.leds[j][1] * 0.9)
+                        self.leds[j][2] = int(self.leds[j][2] * 0.9)
+                self.leds[i] = color_
+                self.leds.write()
+                sleep(0.05)
+
+
+            for k in range(10):
+                for i in range(self.width):
+                    if self.leds[j] != [0, 0, 0]:
+                        self.leds[j][0] = int(self.leds[j][0] * 0.9)
+                        self.leds[j][1] = int(self.leds[j][1] * 0.9)
+                        self.leds[j][2] = int(self.leds[j][2] * 0.9)
+                self.leds.write()
+                sleep(0.025)
+            
+            
         for i in range(self.width):
             temp.append([int(random()*256), int(random()*256), int(random()*256)])
             self.leds[i] = temp[-1]
@@ -154,6 +177,71 @@ class Leds:
                         
                     if sum(list(map(sum,a))) == 0:
                         break
+
+class Matrix_Leds:
+    """
+    If you assemble a matrix of LEDs from top to bottom like this:
+    >>>>>>>>>>>>>>v
+    v<<<<<<<<<<<<<<
+    >>>>>>>>>>>>>>v
+    v<<<<<<<<<<<<<<
+    """
+    def __init__(self, door:int, width:int, lines:int, bpp:int = 3):
+        if width % columns != 0:
+            print("The tape width dimensions and number of lines do not match.")
+            return None
+        
+        self.door = door
+        self.leds = NeoPixel(door, width, bpp = bpp)
+        self.width = width
+        self.columns = lines
+        self.strings = None
+        self.lines = None
+
+    def strings(self, strings:dict):
+        """
+        Defines the strings
+        """
+        n = (len(strings[strings.keys()[0]]), len(strings[strings.keys()[0]])[0])
+        for i in strings.keys():
+            if n != (len(i), len(i[0])):
+                print(f"String {i} has dimension {len(i), len(i[0])} and should have dimension {n}.")
+                return None
+        self.strings = strings
+        self.lines = n[0]
+
+    def write(self, text:str, color:list = [255, 255, 255]):
+        """
+        Write on the display
+        """
+        matrix = [[[0,0,0] for i in range(self.width/self.lines)] for j in range(self.lines)]
+
+        if type(color[0]) != list and type(color[0]) != tuple:
+            color = [color for i in range(len(text))]            
+        
+        for character in text:
+            c = self.strings[character]
+            k = 0
+            for i in range(len(c)):
+                for j in range(len(c[0])):
+                    if c[i][j] == 1:
+                        matrix[i][k * len(c[0] + 1)] = color[k]
+                    k += 1
+
+        for i in range(len(matrix)):
+            if i % 2 == 0:
+                matrix[i] = matrix[i][::-1]
+
+        final_matrix = []
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                final_matrix.append(matrix[i][j])
+
+        for i in range(self.width)
+            self.leds[i] = final_matrix[i]
+
+        self.leds.write()
+        
 
 color = {"blue": [0,0,255],
          "lightblue": [173,216,230],

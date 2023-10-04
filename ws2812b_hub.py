@@ -2,6 +2,7 @@
 Class to ws2812b
 """
 
+import machine
 from neopixel import NeoPixel
 from random import random
 from time import sleep
@@ -15,7 +16,7 @@ class Leds:
         If the LED is RGB, bpp is 3
         """
         self.door = door
-        self.leds = NeoPixel(door, width, bpp = bpp)
+        self.leds = NeoPixel(machine.Pin(door), width, bpp = bpp)
         self.width = width
         self.numbers = None
 
@@ -192,7 +193,7 @@ class Matrix_Leds:
             return None
         
         self.door = door
-        self.leds = NeoPixel(door, width, bpp = bpp)
+        self.leds = NeoPixel(machine.Pin(door), width, bpp = bpp)
         self.width = width
         self.columns = lines
         self.strings = None

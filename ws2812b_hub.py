@@ -110,6 +110,14 @@ class Leds:
                         self.leds[j][2] = int(self.leds[j][2] * 0.9)
                 self.leds.write()
                 sleep(0.025)
+
+        if self.numbers != None:
+            for i in self.numbers:
+                k = ""
+                for k in range(int(self.width/len(self.numbers[i]))):
+                    k += i
+                self.add_numbers(values = k)
+                self.leds.write()
             
             
         for i in range(self.width):

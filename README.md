@@ -53,13 +53,14 @@ If you assemble a matrix of LEDs from top to bottom like this:
 pin = 5
 width = 30*10 #Width and height of LEDs, Note that in reality, this is a strip with 300 LEDs:
 lines = 10
-my_led_tv = Matrix_Leds(pin, width, lines = 10)
+my_led_tv = Matrix_Leds(pin, width, lines)
 
 you_dict = {"C":[[1,1,1,1,1],
                   [0,0,0,0,1],
                   [1,0,0,0,0],
                   [0,0,0,0,1],
                   [1,1,1,1,1]]}
+
 my_led_tv.strings = you_dict #Your dict of characters
 
 my_led_tv.write("ABCDEFGHIJ")

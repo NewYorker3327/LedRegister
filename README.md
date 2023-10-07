@@ -25,7 +25,7 @@ else:
 
 ### This library is intended for working with registers; however, it has not been validated yet.
 
-## ```ws2812b_hub```
+## ```ws2812b_hub.py```
 
 ### This library allows for easier handling of LED strips using the ```Leds``` class, adding predefined colors and some effects. Additionally, it is possible to assemble an LED display using this library, utilizing the ```Matrix_Leds``` class.
 

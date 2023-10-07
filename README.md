@@ -44,11 +44,11 @@ Example ```Matrix_Leds```:
 ```
 from ws2812b_hub import color, numbers, Matrix_Leds
 
-If you assemble a matrix of LEDs from top to bottom like this:
-    >>>>>>>>>>>>>>v
-    v<<<<<<<<<<<<<<
-    >>>>>>>>>>>>>>v
-    v<<<<<<<<<<<<<<
+#If you assemble a matrix of LEDs from top to bottom like this:
+#    >>>>>>>>>>>>>>v
+#    v<<<<<<<<<<<<<<
+#    >>>>>>>>>>>>>>v
+#    v<<<<<<<<<<<<<<
  
 pin = 5
 width = 30*10 #Width and height of LEDs, Note that in reality, this is a strip with 300 LEDs:

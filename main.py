@@ -130,8 +130,12 @@ if __name__ == "__main__":
     _thread.start_new_thread(pulse_buttons,())
     
     #Loop principal: 
+    old_value = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}"
     while True:
-        Leds.add_numbers(values = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}")
-        sleep(0.08)
+        value = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}"
+        if old_value != value:
+            Leds.add_numbers(values = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}")
+            old_value = value
+        sleep(0.05)
         
             

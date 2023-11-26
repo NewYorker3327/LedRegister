@@ -9,7 +9,7 @@ import esp32
 #Bibliotecas próprias:
 from ws2812b_hub import Leds, color, numbers
 from button_hub import Button
-
+from ports import *
 
 def clock():
     import global_clock, t_0
@@ -76,20 +76,7 @@ if __name__ == "__main__":
 ####  | | | |/ _ \ |_| | '_ \| |/ __/ _ \ / _ \/ __| (_)
 ####  | |_| |  __/  _| | | | | | (_| (_) |  __/\__ \  _ 
 ####  |____/ \___|_| |_|_| |_|_|\___\___/ \___||___/ (_)
-####                             )_)                    
-    ###Pinos:
-    pin_led = ?
-    pin_botton_on_off = ?
-    pin_botton_reset = ?
-    pin_botton_1_in = ?
-    pin_botton_1_out = ?
-    pi_botton_1_set_in = ?
-    pi_botton_1_set_out = ?
-    pin_botton_2_in = ?
-    pin_botton_2_out = ?
-    pi_botton_2_set_in = ?
-    pi_botton_2_set_out = ?
-    
+####                             )_)                      
     ###Saídas:
     tape = Leds(door = pin_led, width = 7*(6+3))
 
@@ -130,12 +117,8 @@ if __name__ == "__main__":
     _thread.start_new_thread(pulse_buttons,())
     
     #Loop principal: 
-    old_value = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}"
     while True:
-        value = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}"
-        if old_value != value:
-            Leds.add_numbers(values = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}")
-            old_value = value
-        sleep(0.05)
+        Leds.add_numbers(values = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}")
+        sleep(0.08)
         
             

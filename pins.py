@@ -1,0 +1,11 @@
+pin_led = ?
+pin_botton_on_off = ?
+pin_botton_reset = ?
+pin_botton_1_in = ?
+pin_botton_1_out = ?
+pi_botton_1_set_in = ?
+pi_botton_1_set_out = ?
+pin_botton_2_in = ?
+pin_botton_2_out = ?
+pi_botton_2_set_in = ?
+pi_botton_2_set_out = ?

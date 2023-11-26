@@ -9,7 +9,7 @@ import esp32
 #Bibliotecas próprias:
 from ws2812b_hub import Leds, color, numbers
 from button_hub import Button
-from ports import *
+from pins import *
 
 def clock():
     import global_clock, t_0

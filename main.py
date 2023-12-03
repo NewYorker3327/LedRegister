@@ -10,6 +10,7 @@ import esp32
 from ws2812b_hub import Leds, color, numbers
 from button_hub import Button
 from pins import *
+from numbers import numbers
 
 def clock():
     import global_clock, t_0
@@ -118,7 +119,10 @@ if __name__ == "__main__":
     
     #Loop principal: 
     while True:
-        Leds.add_numbers(values = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}")
+        Leds.add_numbers(values = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}",
+                         design_list = numbers,
+                         color = [255, 255, 255],
+                         animation = 0)
         sleep(0.08)
         
             

@@ -150,7 +150,7 @@ class Leds:
                 k = ""
                 for k in range(int(self.width/len(self.numbers[i]))):
                     k += i
-                self.add_numbers(values = k)
+                self.add_numbers(value_led = k)
                 self.leds.write()
             
         for i in range(self.width):
@@ -158,7 +158,7 @@ class Leds:
             self.leds[i] = temp[-1]
         self.leds.write()
 
-    def add_numbers(self, design_list:dict = False, color:list = [255, 255, 255], values:str = False, animation:int = 0):
+    def add_numbers(self, design_list:dict = False, color:list = [255, 255, 255], value_led:str = False, animation:int = 0):
         """
         It helps to create displays, pass the list of characters in a list and pass a string of what should be written.
         """
@@ -171,12 +171,12 @@ class Leds:
             if self.width % design_list[i] != 0:
                 print(f"The value {i} in the dictionary is not in the correct dimension.")
 
-        if values != False:
-            if len(values)*design_list[design_list.keys()[0]] != self.width:
+        if value_led != False:
+            if len(value_led)*design_list[design_list.keys()[0]] != self.width:
                 print(f"Pass a size string {self.width/design_list[design_list.keys()[0]]}.")
 
             temp = []
-            for i in values:
+            for i in value_led:
                 temp.extend(design_list[i])
 
             for i in range(len(temp)):

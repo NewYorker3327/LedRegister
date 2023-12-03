@@ -7,59 +7,63 @@ import _thread
 import esp32
 
 #Bibliotecas próprias:
-from ws2812b_hub import Leds, color, numbers
+from ws2812b_hub import Leds, color
 from button_hub import Button
 from pins import *
-from numbers import numbers
+from numbers import number
 
 def clock():
-    import global_clock, t_0
+    global global_clock, t_0
     while True:
         t_ = time() - t_0
         m_ = int(t_ / 60)
         s_ = int(t_ % 60)
+
+        if s_ < 10:
+            s_ = "0" + str(s_)
             
-        global_clock = [m_, s_]
-        sleep(0.02)
+        global_clock = [str(m_), str(s_)]
+        sleep(0.2)
 
 def pulse_buttons():
     global global_pont, t_0
+    pause_ = 0.25
     while True:
         if botton_1_in.value():
             if global_pont[0] < 99:
                 global_pont[0] += 1
-            sleep(0.4)
+            sleep(pause_)
         if botton_2_in.value():
             if global_pont[3] < 99:
                 global_pont[3] += 1
-            sleep(0.4)
+            sleep(pause_)
 
         if botton_1_out.value():
-            if global_pont[0] > 1:
+            if global_pont[0] > 0:
                 global_pont[0] -= 1
-            sleep(0.4)
+            sleep(pause_)
         if botton_2_out.value():
-            if global_pont[3] > 1:
+            if global_pont[3] > 0:
                 global_pont[3] -= 1
-            sleep(0.4)        
+            sleep(pause_)        
 
         if botton_1_set_in.value():
-            if global_pont[0] < 9:
+            if global_pont[1] < 9:
                 global_pont[1] += 1
-            sleep(0.4)
+            sleep(pause_)
         if botton_2_set_in.value():
-            if global_pont[0] < 9:
+            if global_pont[2] < 9:
                 global_pont[2] += 1
-            sleep(0.4)
+            sleep(pause_)
 
         if botton_1_set_out.value():
-            if global_pont[0] > 0:
+            if global_pont[1] > 0:
                 global_pont[1] -= 1
-            sleep(0.4)
+            sleep(pause_)
         if botton_2_set_out.value():
-            if global_pont[0] > 0:
+            if global_pont[2] > 0:
                 global_pont[2] -= 1
-            sleep(0.4)
+            sleep(pause_)
 
         k = 0
         while botton_reset.value():
@@ -79,7 +83,8 @@ if __name__ == "__main__":
 ####  |____/ \___|_| |_|_| |_|_|\___\___/ \___||___/ (_)
 ####                             )_)                      
     ###Saídas:
-    tape = Leds(door = pin_led, width = 7*(6+3))
+    num_leds = 7*3*9
+    tape = Leds(door = pin_led, width = num_leds)
 
     ###Entradas:
     botton_on_off = Button(pin_botton_on_off)
@@ -112,17 +117,31 @@ if __name__ == "__main__":
         sleep(0.05)
     #A partir daqui ele ligou...
 
-    Leds.numbers = numbers
+    Leds.numbers = number
 
     _thread.start_new_thread(clock,())
     _thread.start_new_thread(pulse_buttons,())
     
     #Loop principal: 
-    while True:
-        Leds.add_numbers(values = f"{global_pont[0]:02d}{global_pont[1]}{global_pont[2]}{global_pont[3]:02d}{global_clock[0]:02d}{global_clock[1]:02d}",
-                         design_list = numbers,
-                         color = [255, 255, 255],
-                         animation = 0)
+    while True:        
+        final_values = [f"{global_pont[0]:02d}", global_pont[1], global_pont[2], f"{global_pont[3]:02d}", global_clock[0], global_clock[1]]
+        final_values = list(map(str, final_values))
+        final_values = "".join(final_values)
+        
+        final_leds = []
+        for part_number in final_values:
+            try:
+                final_leds.extend(number[part_number])
+            except:
+                final_leds.extend(number["0"])
+
+        for i in range(num_leds):
+            if final_leds[i]:
+                tape.leds[i] = [250, 250, 250]
+            else:
+                tape.leds[i] = [0, 0, 0]
+        tape.leds.write()
+        
         sleep(0.08)
         
             

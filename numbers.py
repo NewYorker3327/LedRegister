@@ -3,7 +3,7 @@ len_global = 3
 def num(n, len_ = 3):
     return [n for i in range(len_)]
 
-numbers = {"0":[*num(1, len_global),
+number = {"0":[*num(1, len_global),
                 *num(1, len_global),
                 *num(1, len_global),
                 *num(1, len_global),

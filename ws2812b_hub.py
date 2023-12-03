@@ -6,7 +6,6 @@ import machine
 from neopixel import NeoPixel
 from random import random
 from time import sleep
-from math import cos
 
 class Leds:
     def __init__(self, door:int, width:int, bpp:int = 3):
@@ -83,33 +82,6 @@ class Leds:
         """
         temp = [self.leds[i] for i in range(self.width)]
         return temp
-
-    def rainbow(self, width = 20, iterations = 100, pause = 0.02):
-        """
-        Animation of rainbow
-        """
-        colors = []
-        for i in range(self.width):
-            i = i/width
-            colors.append([int((cos(i) + 1)*128),
-                           int((cos(i * 2) + 1)*128),
-                           int((cos(i * 3)/2 + 1)*128)])
-            
-        for i in range(self.width):
-            self.leds[i] = colors[i]
-        self.leds.write()
-        sleep(pause)
-
-        for k in range(iterations):
-            k = k/width
-            colors.pop(0)
-            colors.append([int((cos(i+k) + 1)*128),
-                           int((cos((i+k) * 2) + 1)*128),
-                           int((cos((i+k) * 3)/2 + 1)*128)])
-            for i in range(self.width):
-                self.leds[i] = colors[i]
-            self.leds.write()
-            sleep(pause)
 
     def animation(self, animation:str, value = None):
         if animation == "load" and value != None:
@@ -346,75 +318,3 @@ color = {"blue": [0,0,255],
          "silver": [192,192,192],
          "dimgray": [105,105,105],
          "fire": [255, 40, 0]}
-
-numbers = {"0":[1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                0,0,0],
-           "1":[0,0,0,
-                0,0,0,
-                1,1,1,
-                1,1,1,
-                0,0,0,
-                0,0,0,
-                0,0,0],
-           "2":[1,1,1,
-                1,1,1,
-                0,0,0,
-                1,1,1,
-                1,1,1,
-                0,0,0,
-                1,1,1],
-           "3":[0,0,0,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                0,0,0,
-                1,1,1],
-           "4":[0,0,0,
-                0,0,0,
-                1,1,1,
-                1,1,1,
-                0,0,0,
-                1,1,1,
-                1,1,1],
-           "5":[0,0,0,
-                1,1,1,
-                1,1,1,
-                0,0,0,
-                1,1,1,
-                1,1,1,
-                1,1,1],
-           "6":[1,1,1,
-                1,1,1,
-                1,1,1,
-                0,0,0,
-                1,1,1,
-                1,1,1,
-                1,1,1],
-           "7":[0,0,0,
-                0,0,0,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                0,0,0,
-                0,0,0],
-           "8":[1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1],
-           "9":[0,0,0,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1,
-                1,1,1]}
-

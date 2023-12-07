@@ -16,13 +16,16 @@ def clock():
     global global_clock, t_0
     while True:
         t_ = time() - t_0
-        m_ = int(t_ / 60)
+        h_ = int(t_ / 3600)
+        m_ = int((t_ % 3600) / 60)
         s_ = int(t_ % 60)
 
+        if m_ < 10:
+            m_ = "0" + str(m_)
         if s_ < 10:
             s_ = "0" + str(s_)
             
-        global_clock = [str(m_), str(s_)]
+        global_clock = [str(h_), str(m_), str(s_)]
         sleep(0.2)
 
 def pulse_buttons():
@@ -136,10 +139,21 @@ if __name__ == "__main__":
                 final_leds.extend(number["0"])
 
         for i in range(num_leds):
-            if final_leds[i]:
-                tape.leds[i] = [250, 250, 250]
+            if i < 7*3*3:
+                if final_leds[i]:
+                    tape.leds[i] = color_1
+                else:
+                    tape.leds[i] = [0, 0, 0]
+            elif i < 7*3*6:
+                if final_leds[i]:
+                    tape.leds[i] = color_2
+                else:
+                    tape.leds[i] = [0, 0, 0]
             else:
-                tape.leds[i] = [0, 0, 0]
+                if final_leds[i]:
+                    tape.leds[i] = color_3
+                else:
+                    tape.leds[i] = [0, 0, 0]
         tape.leds.write()
         
         sleep(0.08)

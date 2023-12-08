@@ -10,6 +10,3 @@ pin_botton_2_out = 33
 pi_botton_2_set_in = 14
 pi_botton_2_set_out = 12
 
-color_1 = [200, 100, 100]
-color_2 = [100, 100, 200]
-color_3 = [100, 200, 100]

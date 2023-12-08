@@ -7,18 +7,19 @@ import _thread
 import esp32
 
 #Bibliotecas próprias:
-from ws2812b_hub import Leds, color
 from button_hub import Button
+import machine
+from neopixel import NeoPixel
 from pins import *
-from numbers import number
+from numbers import *
 
 def clock():
     global global_clock, t_0
     while True:
         t_ = time() - t_0
-        h_ = int(t_ / 3600)
-        m_ = int((t_ % 3600) / 60)
-        s_ = int(t_ % 60)
+        h_ = int(t_/3600)
+        m_ = int((t_%3600)/60)
+        s_ = int(t_%60)
 
         if m_ < 10:
             m_ = "0" + str(m_)
@@ -86,8 +87,10 @@ if __name__ == "__main__":
 ####  |____/ \___|_| |_|_| |_|_|\___\___/ \___||___/ (_)
 ####                             )_)                      
     ###Saídas:
-    num_leds = 7*3*9
-    tape = Leds(door = pin_led, width = num_leds)
+    part_1 = 7*len_number_1*6
+    part_2 = 7*len_number_2*3
+    num_leds = part_1 + part_2
+    leds = NeoPixel(machine.Pin(pin_led), num_leds)
 
     ###Entradas:
     botton_on_off = Button(pin_botton_on_off)
@@ -100,6 +103,10 @@ if __name__ == "__main__":
     botton_2_out = Button(pin_botton_2_out)
     botton_2_set_in = Button(pi_botton_2_set_in)
     botton_2_set_out = Button(pi_botton_2_set_out)
+
+    ###Tamanho dos números no placar:
+    number_1 = new_number(len_number_1)
+    number_2 = new_number(len_number_2)
 
 ####   _____                     _                  _           
 ####  | ____|_  _____  ___ _   _| |_ __ _ _ __   __| | ___    _ 
@@ -114,13 +121,18 @@ if __name__ == "__main__":
     #Enquanto não liga:
     while True: 
         if botton_on_off.value() == 1:
-            sleep(1)
-            if botton_on_off.value() == 1:
-                break
+            continue_ = True
+            for i in range(num_leds):
+                if botton_on_off.value() == 0:
+                    continue_ = False
+                if continue_:
+                    animation_load(leds, num_leds)
+                    sleep(press_to_on/num_leds)
+                    if botton_on_off.value() == 1:
+                        break
+        del_leds(leds, num_leds)            
         sleep(0.05)
     #A partir daqui ele ligou...
-
-    Leds.numbers = number
 
     _thread.start_new_thread(clock,())
     _thread.start_new_thread(pulse_buttons,())
@@ -132,30 +144,36 @@ if __name__ == "__main__":
         final_values = "".join(final_values)
         
         final_leds = []
+        i = 0
         for part_number in final_values:
-            try:
-                final_leds.extend(number[part_number])
-            except:
-                final_leds.extend(number["0"])
+            if i < part_1
+                try:
+                    final_leds.extend(number_1[part_number])
+                except:
+                    final_leds.extend(number_1["0"])
+            else:
+                try:
+                    final_leds.extend(number_2[part_number])
+                except:
+                    final_leds.extend(number_2["0"])
+            i += 1
 
         for i in range(num_leds):
-            if i < 7*3*3:
+            if i < 7*len_number_1*3:
                 if final_leds[i]:
-                    tape.leds[i] = color_1
+                    leds[i] = color_1
                 else:
-                    tape.leds[i] = [0, 0, 0]
-            elif i < 7*3*6:
+                    leds[i] = [0, 0, 0]
+            elif i < 7*len_number_1*6:
                 if final_leds[i]:
-                    tape.leds[i] = color_2
+                    leds[i] = color_2
                 else:
-                    tape.leds[i] = [0, 0, 0]
+                    leds[i] = [0, 0, 0]
             else:
                 if final_leds[i]:
-                    tape.leds[i] = color_3
+                    leds[i] = color_3
                 else:
-                    tape.leds[i] = [0, 0, 0]
-        tape.leds.write()
+                    leds[i] = [0, 0, 0]
+        leds.write()
         
-        sleep(0.08)
-        
-            
+        sleep(0.05)

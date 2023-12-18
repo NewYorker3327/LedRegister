@@ -90,23 +90,43 @@ if __name__ == "__main__":
     part_1 = 7*len_number_1*6
     part_2 = 7*len_number_2*3
     num_leds = part_1 + part_2
-    leds = NeoPixel(machine.Pin(pin_led), num_leds)
+    leds = NeoPixel(machine.Pin(pin_led), num_leds + 2) #Numero de leds mais 2 leds brancos
 
     ###Entradas:
-    botton_on_off = Button(pin_botton_on_off)
-    botton_reset = Button(pin_botton_reset)
-    botton_1_in = Button(pin_botton_1_in)
-    botton_1_out = Button(pin_botton_1_out)
-    botton_1_set_in = Button(pi_botton_1_set_in)
-    botton_1_set_out = Button(pi_botton_1_set_out)
-    botton_2_in = Button(pin_botton_2_in)
-    botton_2_out = Button(pin_botton_2_out)
-    botton_2_set_in = Button(pi_botton_2_set_in)
-    botton_2_set_out = Button(pi_botton_2_set_out)
+    error_button = True
+    while error_button:
+        botton_on_off = Button(pin_botton_on_off)
+        botton_reset = Button(pin_botton_reset)
+        botton_1_in = Button(pin_botton_1_in)
+        botton_1_out = Button(pin_botton_1_out)
+        botton_1_set_in = Button(pi_botton_1_set_in)
+        botton_1_set_out = Button(pi_botton_1_set_out)
+        botton_2_in = Button(pin_botton_2_in)
+        botton_2_out = Button(pin_botton_2_out)
+        botton_2_set_in = Button(pi_botton_2_set_in)
+        botton_2_set_out = Button(pi_botton_2_set_out)
+        try:
+            botton_on_off.value()
+            error_button = False
+        except AttributeError:
+            error_button = True
+            print("Erro no botao")
+            leds[0] = [255, 255, 255]
+            leds.write()
+            sleep(0.5)
+            leds[0] = [0, 0, 0]
+            sleep(0.5)
+            
 
     ###Tamanho dos números no placar:
     number_1 = new_number(len_number_1)
     number_2 = new_number(len_number_2)
+    print("Saidas e entradas definidas")
+    
+    for i in range(part_1 + part_2):
+        leds[i] = [250, 250, 250]
+    leds.write()
+    print("Todos leds acessos")
 
 ####   _____                     _                  _           
 ####  | ____|_  _____  ___ _   _| |_ __ _ _ __   __| | ___    _ 
@@ -119,19 +139,27 @@ if __name__ == "__main__":
     t_0 = time()
 
     #Enquanto não liga:
-    while True: 
+    on_all = False
+    while on_all == False: 
         if botton_on_off.value() == 1:
+            print("No botao 0")
             continue_ = True
-            for i in range(num_leds):
+            for i in range(10):
+                print(f"No botao {i + 1}")
                 if botton_on_off.value() == 0:
                     continue_ = False
+                    print("Soltou o botão")
                 if continue_:
                     animation_load(leds, num_leds)
-                    sleep(press_to_on/num_leds)
+                    #sleep(press_to_on/num_leds)
+                    sleep(0.05)
                     if botton_on_off.value() == 1:
-                        break
-        del_leds(leds, num_leds)            
+                        print("Feito")
+                        on_all = True
+                        continue_ = False
+        del_leds(leds, num_leds)
         sleep(0.05)
+    print("Ligou")
     #A partir daqui ele ligou...
 
     _thread.start_new_thread(clock,())
@@ -146,7 +174,7 @@ if __name__ == "__main__":
         final_leds = []
         i = 0
         for part_number in final_values:
-            if i < part_1
+            if i < part_1:
                 try:
                     final_leds.extend(number_1[part_number])
                 except:
@@ -170,10 +198,17 @@ if __name__ == "__main__":
                 else:
                     leds[i] = [0, 0, 0]
             else:
-                if final_leds[i]:
-                    leds[i] = color_3
-                else:
-                    leds[i] = [0, 0, 0]
+                try:
+                    if final_leds[i]:
+                        leds[i] = color_3
+                    else:
+                        leds[i] = [0, 0, 0]
+                except:
+                    print(i)
+        
+        leds[num_leds + 0] = [255, 255, 255]
+        leds[num_leds + 1] = [255, 255, 255]
+                    
         leds.write()
         
         sleep(0.05)

@@ -13,6 +13,8 @@ from neopixel import NeoPixel
 from pins import *
 from numbers import *
 
+version = [0, 1, 0]
+
 def clock():
     global global_clock, t_0
     while True:
@@ -116,7 +118,6 @@ if __name__ == "__main__":
             sleep(0.5)
             leds[0] = [0, 0, 0]
             sleep(0.5)
-            
 
     ###Tamanho dos números no placar:
     number_1 = new_number(len_number_1)

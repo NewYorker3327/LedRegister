@@ -122,6 +122,8 @@ if __name__ == "__main__":
     ###Tamanho dos números no placar:
     number_1 = new_number(len_number_1)
     number_2 = new_number(len_number_2)
+    number_1_inverse = new_number(len_number_1, inverse = True)
+    number_2_inverse = new_number(len_number_2, inverse = True)
     print("Saidas e entradas definidas")
     
     for i in range(part_1 + part_2):
@@ -167,27 +169,46 @@ if __name__ == "__main__":
     _thread.start_new_thread(pulse_buttons,())
     
     #Loop principal: 
-    while True:        
-        final_values = [f"{global_pont[0]:02d}", global_pont[1], global_pont[2], f"{global_pont[3]:02d}", global_clock[0], global_clock[1]]
+    while True:
+        #Original:
+        #final_values = [f"{global_pont[0]:02d}", global_pont[1], global_pont[2], f"{global_pont[3]:02d}", global_clock[0], global_clock[1]]
+        #Com primeira placa invertida:
+        final_values = [global_pont[1], f"{global_pont[0]:02d}", global_pont[2], f"{global_pont[3]:02d}", global_clock[0], global_clock[1]]
+
         final_values = list(map(str, final_values))
         final_values = "".join(final_values)
+
+        #Com a primeira placa invertida:
+        final_values = f"{final_values[1]}{final_values[0]}{final_values[2:]}"
         
         final_leds = []
         i = 0
         for part_number in final_values:
-            if i < part_1:
-                try:
-                    final_leds.extend(number_1[part_number])
-                except:
-                    final_leds.extend(number_1["0"])
-            else:
-                try:
-                    final_leds.extend(number_2[part_number])
-                except:
-                    final_leds.extend(number_2["0"])
-            i += 1
+            if i < int(part_1/2): #Se for a placa invertida
+                if i < part_1:
+                    try:
+                        final_leds.extend(number_1_inverse[part_number])
+                    except:
+                        final_leds.extend(number_1_inverse["0"])
+                else:
+                    try:
+                        final_leds.extend(number_2_inverse[part_number])
+                    except:
+                        final_leds.extend(number_2_inverse["0"])
+                i += 1
+            else: #Se for a placa que não está invertida
+                if i < part_1:
+                    try:
+                        final_leds.extend(number_1[part_number])
+                    except:
+                        final_leds.extend(number_1["0"])
+                else:
+                    try:
+                        final_leds.extend(number_2[part_number])
+                    except:
+                        final_leds.extend(number_2["0"])
 
-        for i in range(num_leds):
+        for i in range(num_leds): #Pega a lista final_leds com os valores tratados e adiciona no display
             if i < 7*len_number_1*3:
                 if final_leds[i]:
                     leds[i] = color_1
@@ -206,9 +227,9 @@ if __name__ == "__main__":
                         leds[i] = [0, 0, 0]
                 except:
                     print(i)
-        
-        leds[num_leds + 0] = [255, 255, 255]
-        leds[num_leds + 1] = [255, 255, 255]
+
+        for leds_point in range(leds_more):
+            leds[num_leds + leds_point] = [255, 255, 255]
                     
         leds.write()
         
